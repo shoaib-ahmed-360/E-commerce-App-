@@ -1,9 +1,11 @@
-import 'package:dress_n_design/bottombars/cart.dart';
-import 'package:dress_n_design/bottombars/home.dart';
-import 'package:dress_n_design/bottombars/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
+
+// Your screen imports
+import 'package:dress_n_design/bottombars/cart.dart';
+import 'package:dress_n_design/bottombars/home.dart';
+import 'package:dress_n_design/bottombars/profile.dart';
 
 class Bars extends StatefulWidget {
   const Bars({super.key});
@@ -13,126 +15,172 @@ class Bars extends StatefulWidget {
 }
 
 class _BarsState extends State<Bars> {
-  PageController pageController = PageController();
-  int currentstate = 0;
+  final PageController pageController = PageController();
+  int currentState = 0;
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // --- Premium Drawer ---
       drawer: Drawer(
-        child: Column(
-          children: [
-            UserAccountsDrawerHeader(accountName: Text('MR Kamran Mogul'), 
-            accountEmail: Text('kami123@gmail.com'),
-            currentAccountPicture: CircleAvatar(child: Icon(Icons.person),),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Colors.indigo,
-                Colors.white38
-              ])
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF1A237E), Color(0xFF3F51B5), Colors.white],
             ),
-            ),
-           SizedBox(
-            height: 500,
-           ),
-              // ),
-            Container(
-              
-                height: 50,
-                width: 95,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20) ,
-                gradient: LinearGradient(colors: [
-                  Colors.red,
-                  Colors.cyan,
-                  // Colors.indigo
-                ])
-                // , color: Colors.deepOrange
+          ),
+          child: Column(
+            
+            children: [
+              UserAccountsDrawerHeader(
+                margin: EdgeInsets.zero,
+                accountName: const Text(
+                  'MR Kamran Mogul',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
-                
-              child: ElevatedButton(
-                child: Text('Admin Portal'),
-                
-                onPressed: () {
-
-                }
-              )
-            )
-            // ElevatedButton(onPressed: () {}, child: Text('Admin Portal'))
-          ],
+                accountEmail: const Text('kami123@gmail.com'),
+                currentAccountPicture: const CircleAvatar(
+                  backgroundColor: Colors.white,
+                  child: FaIcon(FontAwesomeIcons.user, color: Color(0xFF1A237E)),
+                ),
+                decoration: const BoxDecoration(color: Colors.transparent),
+              ),
+              const Spacer(),
+              // Admin Portal Button with glowing aesthetic
+              Padding(
+                padding: const EdgeInsets.only(bottom: 40.0),
+                child: Container(
+                  height: 55,
+                  width: 180,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    gradient: const LinearGradient(
+                      colors: [Colors.deepOrange, Colors.orangeAccent],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.deepOrange,
+                        blurRadius: 12,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () {
+                      // Navigate to Admin Portal
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FaIcon(FontAwesomeIcons.screwdriverWrench, color: Colors.white, size: 18),
+                        SizedBox(width: 8),
+                        Text(
+                          'Admin Portal',
+                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        
       ),
-      appBar: AppBar(
-  title: const Text(
-    'Dress N Design',
-    style: TextStyle(
-      color: Colors.white,
-      fontSize: 22,
-      fontWeight: FontWeight.w300,
-      fontStyle: FontStyle.italic,
-      letterSpacing: 2.0,
-      fontFamily: 'Serif', // Use a premium font family if available
-    ),
-  ),
-  centerTitle: true,
-  elevation: 4,
-  shadowColor: Colors.black.withOpacity(0.25),
-  flexibleSpace: Container(
-    decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Color(0xFF1A237E), // Deep Royal Indigo
-          Color(0xFF3F51B5), // Vibrant Indigo
-          Color(0xFF7986CB), // Soft Indigo Accent
-        ],
-      ),
-    ),
-  ),
- 
-),
 
+      // --- Aesthetic AppBar ---
+      appBar: AppBar(
+        title: const Text(
+          'Dress N Design',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.w300,
+            fontStyle: FontStyle.italic,
+            letterSpacing: 2.5,
+            fontFamily: 'Serif',
+          ),
+        ),
+        centerTitle: true,
+        elevation: 8,
+        shadowColor: const Color(0xFF1A237E),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF1A237E), // Deep Royal Indigo
+                Color(0xFF3F51B5), // Vibrant Indigo
+                Color(0xFF7986CB), // Soft Indigo Accent
+              ],
+            ),
+          ),
+        ),
+      ),
+
+      // --- Main Body (PageView) ---
       body: PageView(
         controller: pageController,
         onPageChanged: (index) {
           setState(() {
-            currentstate = index;
+            currentState = index;
           });
-        } ,
-        children: [
+        },
+        children: const [
           Home(),
           Cart(),
-          Profile()
+          Profile(),
         ],
       ),
-      bottomNavigationBar: StylishBottomBar(
-        gradient: LinearGradient(colors: [
-          Colors.blueAccent,
-          Colors.white38
-        ]),
-        currentIndex: currentstate,
-        onTap: (index) => setState(() {
-          currentstate = index;
-          if(pageController.hasClients){
-            pageController.jumpToPage(index);
-          }
-        }),
-        
-        items:[
-       BottomBarItem(icon: (FaIcon(FontAwesomeIcons.house , color: Colors.indigo,)), title: Text("Home" , style: TextStyle(color: Colors.indigo),)),
-       BottomBarItem(icon: FaIcon(FontAwesomeIcons.cartShopping , color: Colors.indigo,), title: Text('Cart' ,style: TextStyle(color: Colors.indigo),)),
-       BottomBarItem(icon: FaIcon(FontAwesomeIcons.person , color: Colors.indigo,), title: Text('Profile' , style: TextStyle(color: Colors.indigo),))
-        ] , 
-        option: AnimatedBarOptions(iconStyle: IconStyle.animated)),
-      // bottomNavigationBar: BottomAppBar(
-      //  child: Row(
-      //    children: [
-      //      Icon(Icons.home),
 
-      //    ],
-      //  ), 
-       
-      // ),
+      // --- Modern Stylish Bottom Navigation Bar ---
+      bottomNavigationBar: StylishBottomBar(
+        currentIndex: currentState,
+        onTap: (index) {
+          setState(() {
+            currentState = index;
+            if (pageController.hasClients) {
+              pageController.jumpToPage(index);
+            }
+          });
+        },
+        items: [
+          BottomBarItem(
+            icon: const FaIcon(FontAwesomeIcons.house , color: Colors.indigo,),
+            title: const Text("Home" , style: TextStyle(color: Colors.indigo),),
+          ),
+          BottomBarItem(
+            icon: const FaIcon(FontAwesomeIcons.cartShopping , color: Colors.indigo),
+            title: const Text('Cart' , style: TextStyle(color: Colors.indigo),),
+          ),
+          BottomBarItem(
+            icon: const FaIcon(FontAwesomeIcons.user , color: Colors.indigo),
+            title: const Text('Profile' ,  style: TextStyle(color: Colors.indigo),),
+          ),
+        ],
+        option: AnimatedBarOptions(
+          iconStyle: IconStyle.animated,
+          
+          // activeColor: Colors.indigo,
+          padding: const EdgeInsets.all(15),
+        ),
+      ),
     );
   }
 }
