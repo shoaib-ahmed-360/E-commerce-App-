@@ -1,11 +1,13 @@
+import 'package:dress_n_design/navigation/customappbar.dart';
+import 'package:dress_n_design/navigation/custombottombar.dart';
+import 'package:dress_n_design/navigation/cutomdrawer.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
-
-// Your screen imports
 import 'package:dress_n_design/bottombars/cart.dart';
 import 'package:dress_n_design/bottombars/home.dart';
 import 'package:dress_n_design/bottombars/profile.dart';
+
+// 1. Import your custom bottom bar file here
+// import 'package:dress_n_design/navigation/custom_bottom_bar.dart'; 
 
 class Bars extends StatefulWidget {
   const Bars({super.key});
@@ -15,131 +17,25 @@ class Bars extends StatefulWidget {
 }
 
 class _BarsState extends State<Bars> {
-  final PageController pageController = PageController();
-  int currentState = 0;
+  final PageController _pageController = PageController();
+  int _currentState = 0; // Tracks the active tab index
 
   @override
   void dispose() {
-    pageController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // --- Premium Drawer ---
-      drawer: Drawer(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF1A237E), Color(0xFF3F51B5), Colors.white],
-            ),
-          ),
-          child: Column(
-            
-            children: [
-              UserAccountsDrawerHeader(
-                margin: EdgeInsets.zero,
-                accountName: const Text(
-                  'MR Kamran Mogul',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-                accountEmail: const Text('kami123@gmail.com'),
-                currentAccountPicture: const CircleAvatar(
-                  backgroundColor: Colors.white,
-                  child: FaIcon(FontAwesomeIcons.user, color: Color(0xFF1A237E)),
-                ),
-                decoration: const BoxDecoration(color: Colors.transparent),
-              ),
-              const Spacer(),
-              // Admin Portal Button with glowing aesthetic
-              Padding(
-                padding: const EdgeInsets.only(bottom: 40.0),
-                child: Container(
-                  height: 55,
-                  width: 180,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    gradient: const LinearGradient(
-                      colors: [Colors.deepOrange, Colors.orangeAccent],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.deepOrange,
-                        blurRadius: 12,
-                        offset: const Offset(0, 6),
-                      ),
-                    ],
-                  ),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent,
-                      shadowColor: Colors.transparent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    onPressed: () {
-                      // Navigate to Admin Portal
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FaIcon(FontAwesomeIcons.screwdriverWrench, color: Colors.white, size: 18),
-                        SizedBox(width: 8),
-                        Text(
-                          'Admin Portal',
-                          style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-
-      // --- Aesthetic AppBar ---
-      appBar: AppBar(
-        title: const Text(
-          'Dress N Design',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.w300,
-            fontStyle: FontStyle.italic,
-            letterSpacing: 2.5,
-            fontFamily: 'Serif',
-          ),
-        ),
-        centerTitle: true,
-        elevation: 8,
-        shadowColor: const Color(0xFF1A237E),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xFF1A237E), // Deep Royal Indigo
-                Color(0xFF3F51B5), // Vibrant Indigo
-                Color(0xFF7986CB), // Soft Indigo Accent
-              ],
-            ),
-          ),
-        ),
-      ),
-
-      // --- Main Body (PageView) ---
+      appBar: Customappbar(),
+      drawer: Customdrawer(),
       body: PageView(
-        controller: pageController,
+        controller: _pageController,
         onPageChanged: (index) {
           setState(() {
-            currentState = index;
+            _currentState = index;
           });
         },
         children: const [
@@ -148,38 +44,18 @@ class _BarsState extends State<Bars> {
           Profile(),
         ],
       ),
-
-      // --- Modern Stylish Bottom Navigation Bar ---
-      bottomNavigationBar: StylishBottomBar(
-        currentIndex: currentState,
-        onTap: (index) {
+      
+      // 2. Pass variables and functions down into your widget
+      bottomNavigationBar: Custombottombar(
+        currentState: _currentState, // Sends current state value into widget
+        onTap: (index) {            // Listens for clicks coming back out
           setState(() {
-            currentState = index;
-            if (pageController.hasClients) {
-              pageController.jumpToPage(index);
+            _currentState = index;
+            if (_pageController.hasClients) {
+              _pageController.jumpToPage(index);
             }
           });
         },
-        items: [
-          BottomBarItem(
-            icon: const FaIcon(FontAwesomeIcons.house , color: Colors.indigo,),
-            title: const Text("Home" , style: TextStyle(color: Colors.indigo),),
-          ),
-          BottomBarItem(
-            icon: const FaIcon(FontAwesomeIcons.cartShopping , color: Colors.indigo),
-            title: const Text('Cart' , style: TextStyle(color: Colors.indigo),),
-          ),
-          BottomBarItem(
-            icon: const FaIcon(FontAwesomeIcons.user , color: Colors.indigo),
-            title: const Text('Profile' ,  style: TextStyle(color: Colors.indigo),),
-          ),
-        ],
-        option: AnimatedBarOptions(
-          iconStyle: IconStyle.animated,
-          
-          // activeColor: Colors.indigo,
-          padding: const EdgeInsets.all(15),
-        ),
       ),
     );
   }
