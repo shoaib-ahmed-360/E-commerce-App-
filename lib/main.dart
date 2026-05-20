@@ -1,8 +1,17 @@
-import 'package:dress_n_design/tabbar_appbar.dart';
+import 'package:dress_n_design/auth/splash.dart';
+// import 'package:dress_n_design/tabbar_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main()async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize
+  (url:'https://sdiklqxuounwieumrihg.supabase.co' ,
+   anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkaWtscXh1b3Vud2lldW1yaWhnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0NDgzMDMsImV4cCI6MjA5MzAyNDMwM30.eeCoR0qfidLW7quqEBuDgoM2Yoqhy2rX1GGxfQhi9kA');
+   
+
   runApp(const MyApp());
+  Supabase.instance.client;
 }
 
 class MyApp extends StatelessWidget {
@@ -11,10 +20,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    WidgetsFlutterBinding.ensureInitialized();
+    
+    
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Dress N Design',
-    home: Bars(),
+    home: Splash(),
     );
   }
 }

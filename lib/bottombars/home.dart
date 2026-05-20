@@ -56,7 +56,7 @@ class Home extends StatelessWidget {
                         ),
                       ],
                     ),
-                    _buildHeaderRoundButton(Icons.shopping_bag_outlined),
+                    // _buildHeaderRoundButton(Icons.shopping_bag_outlined),
                   ],
                 ),
                 const SizedBox(height: 28),
@@ -214,23 +214,23 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderRoundButton(IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF1A2530),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Icon(icon, size: 20, color: const Color(0xFF2C3E50)),
-    );
-  }
+  // Widget _buildHeaderRoundButton(IconData icon) {
+  //   return Container(
+  //     padding: const EdgeInsets.all(12),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       shape: BoxShape.circle,
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: const Color(0xFF1A2530),
+  //           blurRadius: 10,
+  //           offset: const Offset(0, 4),
+  //         ),
+  //       ],
+  //     ),
+  //     child: Icon(icon, size: 20, color: const Color(0xFF2C3E50)),
+  //   );
+  // }
 
   Widget _buildImageErrorPlaceholder(String label) {
     return Container(
